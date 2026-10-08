@@ -1,0 +1,38 @@
+name: ShelChoPu
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: shelchopu
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python shelchopu.py
+        env:
+          SHELCHOPU_EXCHANGE: ${{ vars.SHELCHOPU_EXCHANGE }}
+          SHELCHOPU_SANDBOX: ${{ vars.SHELCHOPU_SANDBOX }}
+          SHELCHOPU_SYMBOL: ${{ vars.SHELCHOPU_SYMBOL }}
+          SHELCHOPU_SIDE: ${{ vars.SHELCHOPU_SIDE }}
+          SHELCHOPU_MARGIN_USDT: ${{ vars.SHELCHOPU_MARGIN_USDT }}
+          SHELCHOPU_LEVERAGE: ${{ vars.SHELCHOPU_LEVERAGE }}
+          SHELCHOPU_FEE_OPEN: ${{ vars.SHELCHOPU_FEE_OPEN }}
+          SHELCHOPU_FEE_CLOSE: ${{ vars.SHELCHOPU_FEE_CLOSE }}
+          SHELCHOPU_TIMEFRAME: ${{ vars.SHELCHOPU_TIMEFRAME }}
+          SHELCHOPU_LOOKBACK: ${{ vars.SHELCHOPU_LOOKBACK }}
+          SHELCHOPU_VOL_MULT: ${{ vars.SHELCHOPU_VOL_MULT }}
+          SHELCHOPU_EMA_PERIOD: ${{ vars.SHELCHOPU_EMA_PERIOD }}
+          SHELCHOPU_API_KEY: ${{ secrets.SHELCHOPU_API_KEY }}
+          SHELCHOPU_API_SECRET: ${{ secrets.SHELCHOPU_API_SECRET }}
+          SHELCHOPU_API_PASSPHRASE: ${{ secrets.SHELCHOPU_API_PASSPHRASE }}
