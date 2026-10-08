@@ -71,10 +71,13 @@ def build_exchange(cfg):
     if cfg.exchange_id == "bitget":
         params["password"] = cfg.passphrase
         ex = ccxt.bitget(params)
+        if cfg.sandbox:
+            # Bitget demo trading: pakai header paptrading, BUKAN set_sandbox_mode
+            ex.headers = {"paptrading": "1"}
     else:
         ex = ccxt.binanceusdm(params)
-    if cfg.sandbox:
-        ex.set_sandbox_mode(True)
+        if cfg.sandbox:
+            ex.set_sandbox_mode(True)
     ex.load_markets()
     return ex
 
